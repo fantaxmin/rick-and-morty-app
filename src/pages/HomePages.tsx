@@ -3,9 +3,10 @@ import MainSidebar from "../components/MainSidebar";
 
 const HomePage = () => {
     return (
-        <main>
+        <main className="flex">
             <MainSidebar />
-            <DetailsCharacters />
+            <DetailsCharacters 
+            />
         </main>
     );
 }

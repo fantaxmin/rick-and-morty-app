@@ -8,11 +8,20 @@ interface ItemCharacterListProps {
 interface SectionListProps {
     title: string;
     counterFavorites: number;
+    characters: ItemCharacterType[];
+}
+
+interface ItemCharacterType {
+    id: number;
+    name: string;
+    species: string;
+    image: string;
+    isFavorite: boolean;
 }
 
 interface CharacterContextType {
-    characters: any[];
-    favorites: any[];
+    characters: ItemCharacterType[];
+    favorites: ItemCharacterType[];
 }
 
-export type { ItemCharacterListProps, SectionListProps, CharacterContextType };
+export type { ItemCharacterListProps, SectionListProps, CharacterContextType, ItemCharacterType };

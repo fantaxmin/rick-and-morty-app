@@ -1,6 +1,8 @@
 const DetailsCharacters = () => {
     return (
-        <section>
+        <section
+            
+        >
             <div>
                 {/* Character Image */}
             </div>

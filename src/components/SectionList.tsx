@@ -1,7 +1,7 @@
 import type { SectionListProps } from "../types/Characters";
 import ItemCharacterList from "./ItemCharacterList";
 
-const SectionList = ({ title, counterFavorites } : SectionListProps) =>{
+const SectionList = ({ title, counterFavorites, characters } : SectionListProps) =>{
     return(
         <>
             <h3
@@ -10,14 +10,19 @@ const SectionList = ({ title, counterFavorites } : SectionListProps) =>{
                 {title} ({counterFavorites})
             </h3>
             <ul
-                className="mt-2 space-y-2 overflow-y-auto max-h-60"
+                className="mt-2 space-y-2 max-h-60 py-4"
             >
-                <ItemCharacterList
-                    imageCharacter=""
-                    characterName="Rick Sanchez"
-                    characterSpecies="Human"
-                    isFavorite={true}
-                />
+                {
+                    characters.map(character => (
+                        <ItemCharacterList
+                            key={character.id}
+                            imageCharacter={character.image}
+                            characterName={character.name}
+                            characterSpecies={character.species}
+                            isFavorite={character.isFavorite}
+                        />
+                    ))
+                }
             </ul>
         </>
     );
