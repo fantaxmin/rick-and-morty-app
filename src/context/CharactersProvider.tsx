@@ -11,14 +11,15 @@ const CharacterContext = createContext<CharacterContextType>(defaultCharacterCon
 
 const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
 
+    let data : ItemCharacterType[] = [];
     const [characters, setCharacters] = useState<ItemCharacterType[]>([]);
     const [favorites, setFavorites] = useState<ItemCharacterType[]>([]);
 
 
     useEffect(() =>{
-        const getData = mockCharacters;
-        setCharacters(getData.characters);
-        setFavorites(getData.characters.filter(character => character.isFavorite));
+        data = mockCharacters.characters;
+        setFavorites(data.filter(character => character.isFavorite));
+        setCharacters(data.filter(character => !character.isFavorite));
     }, []);
 
     return (
