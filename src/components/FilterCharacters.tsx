@@ -1,21 +1,24 @@
-import { useState } from "react";
-import type { FilterCharactersProps } from "../types/Characters";
+import { useContext, useState } from "react";
+import type { CharacterContextType, FilterCharactersProps } from "../types/Characters";
+import { CharacterContext } from "../context/CharactersProvider";
 
 const FilterCharacters = ({ filterVisible } : FilterCharactersProps) => {
 
     const [selectedSpecies, setSelectedSpecies] = useState<string>('All');
     const [selectedCharacter, setSelectedCharacter] = useState<string>('All');
 
+    const { handleFilterChange, handleFilterVisibility } = useContext<CharacterContextType>(CharacterContext);
+
     const isDisableButton = (selectedCharacter === 'All' && selectedSpecies === 'All');
 
     const handleSubmitFilter = (e: React.FormEvent) => {
         e.preventDefault();
+        handleFilterVisibility(!filterVisible);
         const form = e.currentTarget as HTMLFormElement;
         const formData = new FormData(form);
+        const selectedCharacter = formData.get('filter-character');
         const selectedSpecies = formData.get('filter-specie');
-        console.log({
-            species: selectedSpecies,
-        });
+        handleFilterChange( selectedSpecies as string, selectedCharacter as string );
     };
 
     return(

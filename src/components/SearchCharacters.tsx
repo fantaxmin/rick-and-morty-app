@@ -1,13 +1,12 @@
 import iconSearch from '../assets/icons/Search New.svg';
 import iconContent from '../assets/icons/Right Content.svg';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { CharacterContext } from '../context/CharactersProvider';
 import FilterCharacters from './FilterCharacters';
 
 const SearchInput = () => {
 
-    const [filterVisible, setFilterVisible] = useState<boolean>(false);
-    const { handleSearchChange } = useContext(CharacterContext);
+    const { filterVisible, handleSearchChange, handleFilterVisibility } = useContext(CharacterContext);
 
     return (
         <>
@@ -24,7 +23,7 @@ const SearchInput = () => {
                     aria-label="Search or filter results"
                     onChange={(e) => handleSearchChange(e.target.value)}
                 />
-                <button onClick={() => setFilterVisible(!filterVisible)}>
+                <button onClick={() => handleFilterVisibility(!filterVisible)}>
                     <img
                         src={iconContent}
                         alt="Content Icon"

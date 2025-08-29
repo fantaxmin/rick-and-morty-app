@@ -23,7 +23,10 @@ interface CharacterContextType {
     allCharacters: ItemCharacterType[];
     showCharacters: ItemCharacterType[];
     favorites: ItemCharacterType[];
+    filterVisible: boolean;
+    handleFilterVisibility: (isVisible: boolean) => void;
     handleSearchChange: (searchTerm: string) => void;
+    handleFilterChange: (selectedSpecies: string, selectedCharacter: string) => void;
 }
 
 interface FilterCharactersProps {
