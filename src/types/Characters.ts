@@ -20,8 +20,10 @@ interface ItemCharacterType {
 }
 
 interface CharacterContextType {
-    characters: ItemCharacterType[];
+    allCharacters: ItemCharacterType[];
+    showCharacters: ItemCharacterType[];
     favorites: ItemCharacterType[];
+    handleSearchChange: (searchTerm: string) => void;
 }
 
 export type { ItemCharacterListProps, SectionListProps, CharacterContextType, ItemCharacterType };
