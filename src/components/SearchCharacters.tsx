@@ -17,7 +17,7 @@ const SearchInput = () => {
             <input 
                 type="text" 
                 placeholder="Search or filter results"
-                className="border border-gray-300 rounded-md p-2 my-2 w-full pl-10"
+                className="border border-gray-300 bg-gray-200 rounded-md p-4 my-2 w-full pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-secondary "
                 aria-label="Search or filter results"
                 onChange={(e) => handleSearchChange(e.target.value)}
             />
