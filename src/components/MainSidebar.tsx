@@ -14,7 +14,7 @@ const MainSidebar = () => {
             <h2 className="text-2xl py-4 font-bold">Rick and Morty list</h2>
             <SearchCharacters />
             {
-                hasActiveFilters && (
+                hasActiveFilters.active && (
                     <>
                         <ResultsSectionList
                             showCharacters={showCharacters}
@@ -23,7 +23,7 @@ const MainSidebar = () => {
                 )
             }
             {
-                !hasActiveFilters && (
+                !hasActiveFilters.active && (
                     <>
                         <TitleSectionList
                             title="Favorites"

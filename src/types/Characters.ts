@@ -1,4 +1,5 @@
 interface ItemCharacterListProps {
+    id: number;
     imageCharacter: string;
     characterName: string;
     characterSpecies: string;
@@ -26,6 +27,11 @@ interface ItemCharacterType {
     isFavorite: boolean;
 }
 
+interface HasActiveFiltersInterface {
+    active: boolean;
+    counter: number;
+}
+
 interface HeartIconProps {
     isFavorite: boolean;
 }
@@ -35,10 +41,11 @@ interface CharacterContextType {
     showCharacters: ItemCharacterType[];
     favorites: ItemCharacterType[];
     filterVisible: boolean;
-    hasActiveFilters: boolean;
+    hasActiveFilters: HasActiveFiltersInterface;
     handleFilterVisibility: (isVisible: boolean) => void;
     handleSearchChange: (searchTerm: string) => void;
     handleFilterChange: (selectedSpecies: string, selectedCharacter: string) => void;
+    handleFavoriteToggle: (id: number) => void;
 }
 
 interface FilterCharactersProps {
@@ -52,6 +59,7 @@ export type {
     SectionListProps,
     CharacterContextType,
     ItemCharacterType,
+    HasActiveFiltersInterface,
     HeartIconProps,
     FilterCharactersProps 
 };

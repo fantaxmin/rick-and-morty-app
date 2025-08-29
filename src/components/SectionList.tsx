@@ -10,6 +10,7 @@ const SectionList = ({ characters } : SectionListProps) =>{
                 {
                     characters.map(character => (
                         <ItemCharacterList
+                            id={character.id}
                             key={character.id}
                             imageCharacter={character.image}
                             characterName={character.name}
