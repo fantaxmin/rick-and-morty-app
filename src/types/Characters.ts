@@ -26,4 +26,8 @@ interface CharacterContextType {
     handleSearchChange: (searchTerm: string) => void;
 }
 
-export type { ItemCharacterListProps, SectionListProps, CharacterContextType, ItemCharacterType };
+interface FilterCharactersProps {
+    filterVisible: boolean;
+}
+
+export type { ItemCharacterListProps, SectionListProps, CharacterContextType, ItemCharacterType, FilterCharactersProps };

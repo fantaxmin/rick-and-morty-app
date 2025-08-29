@@ -5,4 +5,31 @@
     --color-secondary: #8054C7;
     --color-tertiary: #5A3696;
     --color-accent: #63D838;
+
+    --animate-slow-show: slow-show 300ms ease-in-out forwards;
+    @keyframes slow-show {
+        0% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        100% {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    --animate-slow-hidden: slow-hidden 300ms ease-in-out forwards;
+    @keyframes slow-hidden {
+        0% {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        100% {
+            display: none;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+    }
 }

@@ -3,7 +3,7 @@ import type { ItemCharacterListProps } from "../types/Characters";
 const ItemCharacterList = ({ imageCharacter = '', characterName, characterSpecies, isFavorite } : ItemCharacterListProps) => {
     return(
         <li
-            className="flex items-center p-2 border-t border-gray-200 hover:bg-primary active:bg-primary hover:cursor-pointer hover:rounded-lg transition-all duration-200"
+            className="flex items-center p-5 border-t border-gray-200 hover:bg-primary active:bg-primary hover:cursor-pointer hover:rounded-lg transition-all duration-200"
         >
             <div
                 className="w-12 h-12 bg-gray-300 rounded-full"
