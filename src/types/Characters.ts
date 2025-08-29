@@ -26,11 +26,16 @@ interface ItemCharacterType {
     isFavorite: boolean;
 }
 
+interface HeartIconProps {
+    isFavorite: boolean;
+}
+
 interface CharacterContextType {
     allCharacters: ItemCharacterType[];
     showCharacters: ItemCharacterType[];
     favorites: ItemCharacterType[];
     filterVisible: boolean;
+    hasActiveFilters: boolean;
     handleFilterVisibility: (isVisible: boolean) => void;
     handleSearchChange: (searchTerm: string) => void;
     handleFilterChange: (selectedSpecies: string, selectedCharacter: string) => void;
@@ -47,5 +52,6 @@ export type {
     SectionListProps,
     CharacterContextType,
     ItemCharacterType,
+    HeartIconProps,
     FilterCharactersProps 
 };

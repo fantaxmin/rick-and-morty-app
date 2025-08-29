@@ -7,6 +7,7 @@ const defaultCharacterContext: CharacterContextType = {
     showCharacters: [],
     favorites: [],
     filterVisible: false,
+    hasActiveFilters: false,
     handleFilterVisibility: () => {},
     handleSearchChange: () => {},
     handleFilterChange: () => {}
@@ -20,6 +21,7 @@ const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
     const [showCharacters, setShowCharacters] = useState<ItemCharacterType[]>([]);
     const [favorites, setFavorites] = useState<ItemCharacterType[]>([]);
     const [filterVisible, setFilterVisible] = useState<boolean>(false);
+    const [hasActiveFilters, setHasActiveFilters] = useState<boolean>(false);
 
     useEffect(() =>{
         setAllCharacters(mockCharacters.characters);
@@ -33,9 +35,11 @@ const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
         );
         if (!searchTerm) {
             setShowCharacters(allCharacters.filter(character => !character.isFavorite));
+            setHasActiveFilters(false);
             return;
         }
         setShowCharacters(filteredCharacters);
+        setHasActiveFilters(true);
     };
 
     const handleFilterVisibility = (isVisible: boolean) => {
@@ -45,8 +49,10 @@ const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
     const handleFilterChange = ( selectedSpecies : string, selectedCharacter : string) => {
         if( selectedCharacter === 'All' && selectedSpecies === 'All' ){
             setShowCharacters(allCharacters.filter(character => !character.isFavorite));
+            setHasActiveFilters(false);
             return;
         }
+        setHasActiveFilters(true);
         if(  selectedCharacter === 'All' ){
             setShowCharacters(allCharacters.filter(character => character.species === selectedSpecies));
             return;
@@ -67,6 +73,7 @@ const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
                 showCharacters,
                 favorites,
                 filterVisible,
+                hasActiveFilters,
                 handleFilterVisibility,
                 handleSearchChange,
                 handleFilterChange

@@ -7,22 +7,34 @@ import TitleSectionList from "./TitleSectionList";
 
 const MainSidebar = () => {
 
-    const { favorites, showCharacters } = useContext(CharacterContext);
+    const { favorites, showCharacters, hasActiveFilters } = useContext(CharacterContext);
 
     return (
         <aside className="w-96 h-screen p-4 pt-4 border-r border-gray-300 bg-gray-100 max-sm:w-full">
             <h2 className="text-2xl py-4 font-bold">Rick and Morty list</h2>
             <SearchCharacters />
-            <ResultsSectionList
-                showCharacters={showCharacters}
-            />
-            <TitleSectionList
-                title="Favorites"
-                counterFavorites={favorites.length}
-            />
-            <SectionList
-                characters={favorites}
-            />
+            {
+                hasActiveFilters && (
+                    <>
+                        <ResultsSectionList
+                            showCharacters={showCharacters}
+                        />
+                    </>
+                )
+            }
+            {
+                !hasActiveFilters && (
+                    <>
+                        <TitleSectionList
+                            title="Favorites"
+                            counterFavorites={favorites.length}
+                        />
+                        <SectionList
+                            characters={favorites}
+                        />
+                    </>
+                )
+            }
             <TitleSectionList
                 title="Characters"
                 counterFavorites={showCharacters.length}

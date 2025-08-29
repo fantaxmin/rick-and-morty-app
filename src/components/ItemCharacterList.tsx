@@ -1,4 +1,5 @@
 import type { ItemCharacterListProps } from "../types/Characters";
+import HeartIcon from "./icon/HeartIcon";
 
 const ItemCharacterList = ({ imageCharacter = '', characterName, characterSpecies, isFavorite } : ItemCharacterListProps) => {
     return(
@@ -27,7 +28,9 @@ const ItemCharacterList = ({ imageCharacter = '', characterName, characterSpecie
             <button
                 className="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full"
             >
-                <span className="text-yellow-500 text-xl">★</span>
+                <span className="text-accent text-xl">
+                    <HeartIcon isFavorite={isFavorite} />
+                </span>
             </button>
         </li>
     );

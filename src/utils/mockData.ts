@@ -5,6 +5,7 @@ const mockCharacters = {
             name: "Rick Sanchez",
             species: "Human",
             image: "https://example.com/rick.png",
+            status: "Alive",
             isFavorite: true
         },
         {
@@ -12,6 +13,7 @@ const mockCharacters = {
             name: "Morty Smith",
             species: "Human",
             image: "https://example.com/morty.png",
+            status: "Alive",
             isFavorite: false
         },
         {
@@ -19,6 +21,7 @@ const mockCharacters = {
             name: "Summer Smith",
             species: "Human",
             image: "https://example.com/summer.png",
+            status: "Alive",
             isFavorite: false
         },
         {
@@ -26,6 +29,7 @@ const mockCharacters = {
             name: "Beth Smith",
             species: "Human",
             image: "https://example.com/beth.png",
+            status: "Alive",
             isFavorite: false
         }
     ]
