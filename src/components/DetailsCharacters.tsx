@@ -1,7 +1,7 @@
 const DetailsCharacters = () => {
     return (
         <section
-            
+            className="flex max-sm:hidden"
         >
             <div>
                 {/* Character Image */}
