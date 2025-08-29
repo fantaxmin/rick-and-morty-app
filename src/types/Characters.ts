@@ -5,9 +5,16 @@ interface ItemCharacterListProps {
     isFavorite: boolean;
 };
 
-interface SectionListProps {
+interface ResultsSectionListProps {
+    showCharacters: ItemCharacterType[];
+}
+
+interface TitleSectionProps {
     title: string;
     counterFavorites: number;
+}
+
+interface SectionListProps {
     characters: ItemCharacterType[];
 }
 
@@ -33,4 +40,12 @@ interface FilterCharactersProps {
     filterVisible: boolean;
 }
 
-export type { ItemCharacterListProps, SectionListProps, CharacterContextType, ItemCharacterType, FilterCharactersProps };
+export type { 
+    ItemCharacterListProps,
+    ResultsSectionListProps,
+    TitleSectionProps,
+    SectionListProps,
+    CharacterContextType,
+    ItemCharacterType,
+    FilterCharactersProps 
+};
