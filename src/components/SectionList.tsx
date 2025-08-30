@@ -5,7 +5,7 @@ const SectionList = ({ characters } : SectionListProps) =>{
     return(
         <>
             <ul
-                className="mt-2 space-y-2 max-h-60 py-4"
+                className="mt-2 space-y-2 h-auto py-4"
             >
                 {
                     characters.map(character => (
