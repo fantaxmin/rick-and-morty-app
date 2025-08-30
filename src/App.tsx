@@ -8,7 +8,9 @@ function App() {
     <HashRouter>
         <CharacterProvider>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<HomePage />} >
+              <Route path="/character/:characterId" element={null} />
+            </Route>
             <Route  path='/*' element={<NotFoundPage />} />
           </Routes>
       </CharacterProvider>

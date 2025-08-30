@@ -24,6 +24,7 @@ interface ItemCharacterType {
     name: string;
     species: string;
     image: string;
+    status: string;
     isFavorite: boolean;
 }
 
@@ -34,6 +35,7 @@ interface HasActiveFiltersInterface {
 
 interface HeartIconProps {
     isFavorite: boolean;
+    className?: string;
 }
 
 interface CharacterContextType {
@@ -46,6 +48,7 @@ interface CharacterContextType {
     handleSearchChange: (searchTerm: string) => void;
     handleFilterChange: (selectedSpecies: string, selectedCharacter: string) => void;
     handleFavoriteToggle: (id: number) => void;
+    getCharacterById: (id: number) => ItemCharacterType | null;
 }
 
 interface FilterCharactersProps {

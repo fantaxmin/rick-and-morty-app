@@ -11,7 +11,8 @@ const defaultCharacterContext: CharacterContextType = {
     handleFilterVisibility: () => {},
     handleSearchChange: () => {},
     handleFilterChange: () => {},
-    handleFavoriteToggle: () => {}
+    handleFavoriteToggle: () => {},
+    getCharacterById: () => null
 };
 
 const CharacterContext = createContext<CharacterContextType>(defaultCharacterContext);
@@ -87,6 +88,19 @@ const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
         setShowCharacters(updatedCharacters.filter(character => !character.isFavorite));
     };
 
+    // Get character by ID
+    const getCharacterById = (id: number) => {
+        let character = favorites.find(character => character.id === id);
+        if (character) {
+            return character;
+        }
+        character = allCharacters.find(character => character.id === id);
+        if (character) {
+            return character;
+        }
+        return null;
+    };
+
     return (
         <CharacterContext.Provider
             value={{
@@ -98,7 +112,8 @@ const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
                 handleFilterVisibility,
                 handleSearchChange,
                 handleFilterChange,
-                handleFavoriteToggle
+                handleFavoriteToggle,
+                getCharacterById
             }}
         >
             {children}
