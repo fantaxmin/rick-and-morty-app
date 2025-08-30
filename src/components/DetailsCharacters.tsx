@@ -17,15 +17,15 @@ const DetailsCharacters = ({ characterId } : { characterId: string }) => {
             <section
                 className="flex flex-col w-full pt-10 px-20 max-sm:hidden"
             >
-                <div className="w-28 h-28 bg-gray-300 rounded-full relative mb-4">
-                    {/* Character Image */}
+                <div className="w-28 h-28 relative mb-4">
+                    <img src={character.image} alt={character.name} className="rounded-full" />
                     <button 
-                        className="w-14 h-14 rounded-full bg-white absolute bottom-0 right-0"
+                        className="w-9 h-9 rounded-full bg-white absolute bottom-0 right-0"
                         onClick={() => handleFavoriteToggle(character.id)}
                     >
                         <HeartIcon
                             isFavorite={character.isFavorite}
-                            className="justify-center items-center w-10 h-10 text-accent mx-auto my-auto cursor-pointer"
+                            className="justify-center items-center w-7 h-7 text-accent mx-auto my-auto cursor-pointer"
                         />
                     </button>
                 </div>

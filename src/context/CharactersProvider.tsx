@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import type { CharacterContextType, HasActiveFiltersInterface, ItemCharacterType } from "../types/Characters";
-import { mockCharacters } from "../utils/mockData";
+// import { mockCharacters } from "../utils/mockData";
+import { fetchCharacters } from "../services/charactersService";
 
 const defaultCharacterContext: CharacterContextType = {
     allCharacters: [],
@@ -26,9 +27,12 @@ const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
     const [hasActiveFilters, setHasActiveFilters] = useState<HasActiveFiltersInterface>({ active: false, counter: 0 });
 
     useEffect(() =>{
-        setAllCharacters(mockCharacters.characters);
-        setFavorites(mockCharacters.characters.filter(character => character.isFavorite));
-        setShowCharacters(mockCharacters.characters.filter(character => !character.isFavorite));
+        const character = async () => {
+            const data = await fetchCharacters();
+            setAllCharacters(data);
+            setShowCharacters(data.filter((character : ItemCharacterType) => !character.isFavorite));
+        }
+        character();
     }, []);
 
     // Handle search input changes
@@ -77,14 +81,19 @@ const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const handleFavoriteToggle = ( id : number ) => {
-        const updatedCharacters = allCharacters.map( character => {
-            if( character.id === id ){
-                return { ...character, isFavorite: !character.isFavorite };
-            }
-            return character;
+        const character = allCharacters.find(character => character.id === id);
+        if( !character ){
+            return;
+        }
+        const updatedCharacter = { ...character, isFavorite: !character.isFavorite };
+        const updatedCharacters = allCharacters.map(character =>{
+            return character.id === id ? updatedCharacter : character;
         });
         setAllCharacters(updatedCharacters);
-        setFavorites(updatedCharacters.filter(character => character.isFavorite));
+        setFavorites(prevFavorites => prevFavorites.filter(fav => fav.id !== id));
+        if( updatedCharacter.isFavorite ){
+            setFavorites(prevFavorites => [...prevFavorites, updatedCharacter]);
+        }
         setShowCharacters(updatedCharacters.filter(character => !character.isFavorite));
     };
 
