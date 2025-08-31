@@ -2,6 +2,10 @@
 
 Una aplicación web moderna para explorar los personajes del universo de Rick and Morty, construida con React y TypeScript.
 
+## 🌐 Demo en Vivo
+
+[Ver Demo](https://rick-and-morty-app-pt.netlify.app/)
+
 ## 🚀 Tecnologías Utilizadas
 
 - **Frontend Framework:** React 18.3.1
