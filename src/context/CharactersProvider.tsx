@@ -1,14 +1,17 @@
 import { createContext, useEffect, useState } from "react";
 import type { CharacterContextType, CurrentFiltersInterface, HasActiveFiltersInterface, ItemCharacterType } from "../types/Characters";
 import { fetchCharacters } from "../services/charactersService";
+import { useParams } from "react-router";
 
 const defaultCharacterContext: CharacterContextType = {
+    isSidebarVisible: true,
     allCharacters: [],
     showCharacters: [],
     favorites: [],
     filterVisible: false,
     hasActiveFilters: { active: false, counter: 0 },
     currentFilter: { selectedSpecies: 'All', selectedCharacter: 'All' },
+    toggleSidebar : () => null,
     handleFilterVisibility: () => {},
     handleSearchChange: () => {},
     handleFilterChange: () => {},
@@ -20,6 +23,7 @@ const CharacterContext = createContext<CharacterContextType>(defaultCharacterCon
 
 const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
 
+    
     const [allCharacters, setAllCharacters] = useState<ItemCharacterType[]>([]);
     const [showCharacters, setShowCharacters] = useState<ItemCharacterType[]>([]);
     const [favorites, setFavorites] = useState<ItemCharacterType[]>([]);
@@ -27,6 +31,10 @@ const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
     const [currentFilter, setCurrentFilter] = useState<CurrentFiltersInterface>({ selectedSpecies: 'All', selectedCharacter: 'All'});
     const [hasActiveFilters, setHasActiveFilters] = useState<HasActiveFiltersInterface>({ active: false, counter: 0 });
 
+    const { characterId } = useParams();
+    const [isSidebarVisible, setIsSidebarVisible] = useState<boolean>(true);
+
+    // API call to fetch characters
     useEffect(() =>{
         const character = async () => {
             const data = await fetchCharacters();
@@ -40,6 +48,13 @@ const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
         }
         character();
     }, []);
+
+   
+
+    // Toggle sidebar visibility
+    const toggleSidebar = () => {
+        setIsSidebarVisible(!isSidebarVisible);
+    };
 
     // Handle search input changes
     const handleSearchChange = (searchTerm: string) => {
@@ -116,12 +131,14 @@ const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
     return (
         <CharacterContext.Provider
             value={{
+                isSidebarVisible,
                 allCharacters,
                 showCharacters,
                 favorites,
                 filterVisible,
                 hasActiveFilters,
                 currentFilter,
+                toggleSidebar,
                 handleFilterVisibility,
                 handleSearchChange,
                 handleFilterChange,

@@ -2,10 +2,11 @@ import { useContext } from "react";
 import { useNavigate } from "react-router";
 import { CharacterContext } from "../context/CharactersProvider";
 import HeartIcon from "./icon/HeartIcon";
+import ArrowIcon from "./icon/ArrowIcon";
 
 const DetailsCharacters = ({ characterId } : { characterId: string }) => {
 
-    const { getCharacterById, handleFavoriteToggle } = useContext(CharacterContext);
+    const { getCharacterById, handleFavoriteToggle, toggleSidebar, isSidebarVisible } = useContext(CharacterContext);
     const navigate = useNavigate();
     const character = getCharacterById(Number(characterId));
     if (!character) {
@@ -13,14 +14,28 @@ const DetailsCharacters = ({ characterId } : { characterId: string }) => {
         return null;
     }
 
+    const handleBackButton = () => {
+        toggleSidebar();
+        navigate("/");
+    }
+
+
     return (
             <section
-                className="flex flex-col w-full pt-10 px-20 max-sm:hidden"
+                className={`flex flex-col w-full pt-5 px-20 max-sm:block max-sm:pt-10 max-sm:transition-all max-sm:duration-300 max-sm:ease-in-out ${isSidebarVisible ? 'max-sm:w-0 max-sm:opacity-0' : 'max-sm:w-full max-sm:opacity-100'}`}
             >
-                <div className="w-28 h-28 relative mb-4">
-                    <img src={character.image} alt={character.name} className="rounded-full" />
+                <nav className="hidden max-sm:flex items-center justify-between mb-6 p-4 fixed top-0 left-0 right-0 bg-white z-10">
                     <button 
-                        className="w-9 h-9 rounded-full bg-white absolute bottom-0 right-0"
+                        onClick={handleBackButton}
+                        className="p-2 hover:bg-gray-200 rounded-full transition-colors"
+                    >
+                        <ArrowIcon className="w-6 h-6" />
+                    </button>
+                </nav>
+                <div className="w-28 h-28 max-sm:w-40 max-sm:h-40 relative mt-16 mb-10">
+                    <img src={character.image} alt={character.name} className="rounded-full w-full h-full object-cover" />
+                    <button 
+                        className="w-10 h-10 rounded-full bg-white absolute bottom-0 right-0"
                         onClick={() => handleFavoriteToggle(character.id)}
                     >
                         <HeartIcon

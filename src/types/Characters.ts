@@ -44,12 +44,14 @@ interface HeartIconProps {
 }
 
 interface CharacterContextType {
+    isSidebarVisible: boolean;
     allCharacters: ItemCharacterType[];
     showCharacters: ItemCharacterType[];
     favorites: ItemCharacterType[];
     filterVisible: boolean;
     hasActiveFilters: HasActiveFiltersInterface;
     currentFilter: CurrentFiltersInterface;
+    toggleSidebar: () => void;
     handleFilterVisibility: (isVisible: boolean) => void;
     handleSearchChange: (searchTerm: string) => void;
     handleFilterChange: (selectedSpecies: string, selectedCharacter: string) => void;
