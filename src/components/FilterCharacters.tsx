@@ -7,10 +7,15 @@ const FilterCharacters = ({ filterVisible } : FilterCharactersProps) => {
 
     const [selectedSpecies, setSelectedSpecies] = useState<string>('All');
     const [selectedCharacter, setSelectedCharacter] = useState<string>('All');
+    const [selectedSort, setSelectedSort] = useState<'asc' | 'desc' | 'none'>('none');
 
-    const { handleFilterChange, handleFilterVisibility } = useContext<CharacterContextType>(CharacterContext);
+    const { handleFilterChange, handleFilterVisibility, currentFilter } = useContext<CharacterContextType>(CharacterContext);
 
-    const isDisableButton = (selectedCharacter === 'All' && selectedSpecies === 'All');
+    const isDisableButton = (
+        selectedSpecies === currentFilter.selectedSpecies && 
+        selectedCharacter === currentFilter.selectedCharacter &&
+        selectedSort === currentFilter.sortOrder
+    );
 
     const handleSubmitFilter = (e: React.FormEvent) => {
         e.preventDefault();
@@ -19,14 +24,22 @@ const FilterCharacters = ({ filterVisible } : FilterCharactersProps) => {
         const formData = new FormData(form);
         const selectedCharacter = formData.get('filter-character');
         const selectedSpecies = formData.get('filter-specie');
-        handleFilterChange( selectedSpecies as string, selectedCharacter as string );
+        const sortOrder = formData.get('sort-order');
+        handleFilterChange(
+            selectedSpecies as string,
+            selectedCharacter as string,
+            sortOrder as 'asc' | 'desc' | 'none'
+        );
     };
 
     return(
         <section
-            className={`${filterVisible ? 'animate-slow-show' : 'animate-slow-hidden'}
-                        w-88 h-70 mb-4 fixed bg-gray-100 rounded-md p-4 border border-gray-300
-                        max-sm:size-full max-sm:fixed max-sm:top-0 max-sm:left-0 max-sm:m-0 max-sm:rounded-none max-sm:z-50`}
+            className={`w-[420px] mb-4 fixed bg-gray-100 rounded-md p-4 border border-gray-300 top-39
+                        max-sm:w-full max-sm:h-full max-sm:fixed max-sm:top-0 max-sm:left-0 max-sm:m-0 max-sm:rounded-none max-sm:z-50
+                        transition-all duration-300 ease-in-out
+                        ${filterVisible 
+                            ? 'opacity-100 translate-y-0' 
+                            : 'opacity-0 -translate-y-4 pointer-events-none'}`}
         >
             <nav className="hidden flex items-center justify-between mb-6 -mt-1 relative max-sm:block">
                 <button 
@@ -138,6 +151,58 @@ const FilterCharacters = ({ filterVisible } : FilterCharactersProps) => {
                                     className='block py-2 w-24 text-center text-gray-700 border border-gray-300 rounded-md cursor-pointer peer-checked:bg-primary peer-checked:text-secondary hover:bg-primary hover:text-tertiary'
                                 >
                                     Alien
+                                </label>
+                            </div>
+                        </section>
+                        <legend className='text-gray-500 mb-2'>Sort by name</legend>
+                        <section className='flex flex-row mb-4 justify-between'>
+                            <div>
+                                <input 
+                                    type="radio"
+                                    id="sort-none" 
+                                    name="sort-order" 
+                                    value="none" 
+                                    className="mr-2 hidden peer"
+                                    onChange={(e) => setSelectedSort(e.target.value as 'none')}
+                                    defaultChecked
+                                />
+                                <label 
+                                    htmlFor="sort-none" 
+                                    className='block py-2 w-24 text-center text-gray-700 border border-gray-300 rounded-md cursor-pointer peer-checked:bg-primary peer-checked:text-secondary hover:bg-primary hover:text-tertiary'
+                                >
+                                    None
+                                </label>
+                            </div>
+                            <div>
+                                <input 
+                                    type="radio" 
+                                    id="sort-asc" 
+                                    name="sort-order" 
+                                    value="asc" 
+                                    onChange={(e) => setSelectedSort(e.target.value as 'asc')}
+                                    className="mr-2 hidden peer"
+                                />
+                                <label 
+                                    htmlFor="sort-asc" 
+                                    className='block py-2 w-24 text-center text-gray-700 border border-gray-300 rounded-md cursor-pointer peer-checked:bg-primary peer-checked:text-secondary hover:bg-primary hover:text-tertiary'
+                                >
+                                    A to Z
+                                </label>
+                            </div>
+                            <div>
+                                <input 
+                                    type="radio" 
+                                    id="sort-desc" 
+                                    name="sort-order" 
+                                    value="desc" 
+                                    onChange={(e) => setSelectedSort(e.target.value as 'desc')}
+                                    className="mr-2 hidden peer"
+                                />
+                                <label 
+                                    htmlFor="sort-desc" 
+                                    className='block py-2 w-24 text-center text-gray-700 border border-gray-300 rounded-md cursor-pointer peer-checked:bg-primary peer-checked:text-secondary hover:bg-primary hover:text-tertiary'
+                                >
+                                    Z to A
                                 </label>
                             </div>
                         </section>

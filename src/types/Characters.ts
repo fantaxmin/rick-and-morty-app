@@ -6,7 +6,7 @@ interface ItemCharacterListProps {
     isFavorite: boolean;
 };
 
-interface ResultsSectionListProps {
+interface ResultsHeaderSectionListProps {
     showCharacters: ItemCharacterType[];
 }
 
@@ -33,20 +33,29 @@ interface HasActiveFiltersInterface {
     counter: number;
 }
 
+interface CurrentFiltersInterface {
+    selectedSpecies: string;
+    selectedCharacter: string;
+    sortOrder: 'asc' | 'desc' | 'none';
+}
+
 interface HeartIconProps {
     isFavorite: boolean;
     className?: string;
 }
 
 interface CharacterContextType {
+    isSidebarVisible: boolean;
     allCharacters: ItemCharacterType[];
     showCharacters: ItemCharacterType[];
     favorites: ItemCharacterType[];
     filterVisible: boolean;
     hasActiveFilters: HasActiveFiltersInterface;
+    currentFilter: CurrentFiltersInterface;
+    toggleSidebar: () => void;
     handleFilterVisibility: (isVisible: boolean) => void;
     handleSearchChange: (searchTerm: string) => void;
-    handleFilterChange: (selectedSpecies: string, selectedCharacter: string) => void;
+    handleFilterChange: (selectedSpecies: string, selectedCharacter: string, sortOrder: 'asc' | 'desc' | 'none') => void;
     handleFavoriteToggle: (id: number) => void;
     getCharacterById: (id: number) => ItemCharacterType | null;
 }
@@ -57,12 +66,13 @@ interface FilterCharactersProps {
 
 export type { 
     ItemCharacterListProps,
-    ResultsSectionListProps,
+    ResultsHeaderSectionListProps,
     TitleSectionProps,
     SectionListProps,
     CharacterContextType,
     ItemCharacterType,
     HasActiveFiltersInterface,
+    CurrentFiltersInterface,
     HeartIconProps,
     FilterCharactersProps 
 };

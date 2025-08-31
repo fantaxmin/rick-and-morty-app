@@ -1,10 +1,13 @@
+import { useContext, useEffect } from "react";
 import { useParams } from "react-router";
 import DetailsCharacters from "../components/DetailsCharacters";
 import MainSidebar from "../components/MainSidebar";
 import NotDetailsCharacter from "../components/NotDetailsCharacter";
+import { CharacterContext } from "../context/CharactersProvider";
 
 const HomePage = () => {
     const { characterId } = useParams();
+    
     return (
         <main className="flex">
             <MainSidebar />

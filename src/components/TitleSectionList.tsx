@@ -3,9 +3,9 @@ import type { TitleSectionProps } from "../types/Characters";
 const TitleSectionList = ({ title, counterFavorites }: TitleSectionProps) =>{
     return(
         <h3
-            className="text-lg font-semibold text-gray-500"
+            className="text-sm font-semibold text-gray-500 mt-6"
         >
-            {title} ({counterFavorites})
+            {title.toUpperCase()} ({counterFavorites})
         </h3>
     );
 };
