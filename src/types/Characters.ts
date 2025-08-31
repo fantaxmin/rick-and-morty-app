@@ -19,6 +19,11 @@ interface SectionListProps {
     characters: ItemCharacterType[];
 }
 
+interface Opinion {
+    text: string;
+    createdAt: string;
+}
+
 interface ItemCharacterType {
     id: number;
     name: string;
@@ -26,6 +31,7 @@ interface ItemCharacterType {
     image: string;
     status: string;
     isFavorite: boolean;
+    opinion?: Opinion;
 }
 
 interface HasActiveFiltersInterface {
@@ -52,12 +58,17 @@ interface CharacterContextType {
     filterVisible: boolean;
     hasActiveFilters: HasActiveFiltersInterface;
     currentFilter: CurrentFiltersInterface;
+    loading: boolean;
+    error: any;
     toggleSidebar: () => void;
     handleFilterVisibility: (isVisible: boolean) => void;
     handleSearchChange: (searchTerm: string) => void;
     handleFilterChange: (selectedSpecies: string, selectedCharacter: string, sortOrder: 'asc' | 'desc' | 'none') => void;
     handleFavoriteToggle: (id: number) => void;
-    getCharacterById: (id: number) => ItemCharacterType | null;
+    getCharacterById: (id: number) => Promise<ItemCharacterType | null>;
+    addOpinion: (id: number, text: string) => void;
+    updateOpinion: (id: number, text: string) => void;
+    removeOpinion: (id: number) => void;
 }
 
 interface FilterCharactersProps {

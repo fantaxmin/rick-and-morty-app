@@ -1,18 +1,59 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CharacterContext } from "../context/CharactersProvider";
 import HeartIcon from "./icon/HeartIcon";
 import ArrowIcon from "./icon/ArrowIcon";
+import type { ItemCharacterType } from "../types/Characters";
 
 const DetailsCharacters = ({ characterId } : { characterId: string }) => {
-
-    const { getCharacterById, handleFavoriteToggle, toggleSidebar, isSidebarVisible } = useContext(CharacterContext);
+    const { 
+        handleFavoriteToggle, 
+        toggleSidebar, 
+        isSidebarVisible, 
+        getCharacterById,
+        addOpinion,
+        updateOpinion,
+        removeOpinion
+    } = useContext(CharacterContext);
+    const [opinionText, setOpinionText] = useState("");
+    const [isEditing, setIsEditing] = useState(false);
     const navigate = useNavigate();
-    const character = getCharacterById(Number(characterId));
-    if (!character) {
-        navigate("/not-found");
-        return null;
-    }
+    const [loading, setLoading] = useState(true);
+    const [character, setCharacter] = useState<ItemCharacterType | null>(null);
+
+    useEffect(() => {
+        const fetchCharacter = async () => {
+            try {
+                const result = await getCharacterById(Number(characterId));
+                if (!result) {
+                    navigate("/not-found");
+                    return;
+                }
+                console.log('Character data:', result); // Debug log
+                
+                // Obtener las opiniones guardadas
+                const savedOpinions = JSON.parse(localStorage.getItem('characterOpinions') || '{}');
+                const savedOpinion = savedOpinions[result.id];
+                console.log('Saved opinion:', savedOpinion); // Debug log
+                
+                // Actualizar el personaje con la opinión guardada
+                setCharacter({
+                    ...result,
+                    opinion: savedOpinion
+                });
+            } catch (error) {
+                console.error("Error fetching character:", error);
+                navigate("/not-found");
+            } finally {
+                setLoading(false);
+            }
+        };
+        
+        fetchCharacter();
+    }, [characterId, getCharacterById, navigate]);
+
+    if (loading) return <div className="flex justify-center items-center h-screen">Loading...</div>;
+    if (!character) return null;
 
     const handleBackButton = () => {
         toggleSidebar();
@@ -47,7 +88,7 @@ const DetailsCharacters = ({ characterId } : { characterId: string }) => {
                 <h2 className="text-2xl font-bold mb-4">{character.name}</h2>
                 <ul className="list-disc">
                     <li className="flex flex-col w-full py-5 border-t border-gray-200">
-                        <span className="font-bold">Specie</span>
+                        <span className="font-bold">Species</span>
                         <span className="text-gray-500 text-md">{character.species}</span>
                     </li>
                     <li className="flex flex-col w-full py-5 border-t border-gray-200">
@@ -55,6 +96,79 @@ const DetailsCharacters = ({ characterId } : { characterId: string }) => {
                         <span className="text-gray-500 text-md">{character.status}</span>
                     </li>
                 </ul>
+
+                <div className="mt-8 border-t border-gray-200 pt-6">
+                    <h3 className="text-xl font-bold mb-4">Your opinion about {character.name}</h3>
+                    {console.log('Current character state:', character)} {/* Debug log */}
+                    {character.opinion && !isEditing ? (
+                        <div className="bg-gray-50 p-4 rounded-lg">
+                            <p className="text-gray-700">{character.opinion.text}</p>
+                            <p className="text-sm text-gray-500 mt-2">
+                                Written on {new Date(character.opinion.createdAt).toLocaleDateString()}
+                            </p>
+                            <div className="mt-4 space-x-2">
+                                <button
+                                    onClick={() => {
+                                        setOpinionText(character.opinion?.text || "");
+                                        setIsEditing(true);
+                                    }}
+                                    className="px-4 py-2 text-sm text-blue-600 hover:text-blue-800"
+                                >
+                                    Edit
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        removeOpinion(character.id);
+                                        setOpinionText("");
+                                    }}
+                                    className="px-4 py-2 text-sm text-red-600 hover:text-red-800"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="space-y-4">
+                            <textarea
+                                value={opinionText}
+                                onChange={(e) => setOpinionText(e.target.value)}
+                                placeholder="Write your opinion here..."
+                                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                rows={4}
+                            />
+                            <div className="flex space-x-2">
+                                <button
+                                    onClick={() => {
+                                        if (opinionText.trim()) {
+                                            if (isEditing) {
+                                                updateOpinion(character.id, opinionText);
+                                            } else {
+                                                addOpinion(character.id, opinionText);
+                                            }
+                                            setOpinionText("");
+                                            setIsEditing(false);
+                                        }
+                                    }}
+                                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                                    disabled={!opinionText.trim()}
+                                >
+                                    {isEditing ? 'Save changes' : 'Save opinion'}
+                                </button>
+                                {isEditing && (
+                                    <button
+                                        onClick={() => {
+                                            setOpinionText("");
+                                            setIsEditing(false);
+                                        }}
+                                        className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+                                    >
+                                        Cancel
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    )}
+                </div>
 
             </section>
     );
