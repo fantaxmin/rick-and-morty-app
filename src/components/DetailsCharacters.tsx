@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { CharacterContext } from "../context/CharactersProvider";
 import HeartIcon from "./icon/HeartIcon";
 import ArrowIcon from "./icon/ArrowIcon";

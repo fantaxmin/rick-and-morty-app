@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import type { CharacterContextType, CurrentFiltersInterface, HasActiveFiltersInterface, ItemCharacterType } from "../types/Characters";
 import { fetchCharacters } from "../services/charactersService";
-import { useParams } from "react-router";
 
 const defaultCharacterContext: CharacterContextType = {
     isSidebarVisible: true,
@@ -10,7 +9,7 @@ const defaultCharacterContext: CharacterContextType = {
     favorites: [],
     filterVisible: false,
     hasActiveFilters: { active: false, counter: 0 },
-    currentFilter: { selectedSpecies: 'All', selectedCharacter: 'All' },
+    currentFilter: { selectedSpecies: 'All', selectedCharacter: 'All', sortOrder: 'none' },
     toggleSidebar : () => null,
     handleFilterVisibility: () => {},
     handleSearchChange: () => {},
@@ -28,10 +27,9 @@ const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
     const [showCharacters, setShowCharacters] = useState<ItemCharacterType[]>([]);
     const [favorites, setFavorites] = useState<ItemCharacterType[]>([]);
     const [filterVisible, setFilterVisible] = useState<boolean>(false);
-    const [currentFilter, setCurrentFilter] = useState<CurrentFiltersInterface>({ selectedSpecies: 'All', selectedCharacter: 'All'});
+    const [currentFilter, setCurrentFilter] = useState<CurrentFiltersInterface>({ selectedSpecies: 'All', selectedCharacter: 'All', sortOrder: 'none' });
     const [hasActiveFilters, setHasActiveFilters] = useState<HasActiveFiltersInterface>({ active: false, counter: 0 });
 
-    const { characterId } = useParams();
     const [isSidebarVisible, setIsSidebarVisible] = useState<boolean>(true);
 
     // API call to fetch characters
@@ -40,9 +38,8 @@ const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
             const data = await fetchCharacters();
             setAllCharacters(data);
             setFavorites(data.filter((character : ItemCharacterType) => {
-                if( character.id === 4 || character.id === 6 ){
-                    return character.isFavorite = true;
-                }
+                character.isFavorite = character.id === 4 || character.id === 6;
+                return character.isFavorite;
             }));
             setShowCharacters(data.filter((character : ItemCharacterType) => !character.isFavorite));
         }
@@ -76,8 +73,8 @@ const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     // Handle filter changes
-    const handleFilterChange = (selectedSpecies: string, selectedCharacter: string) => {
-            setCurrentFilter({ selectedSpecies, selectedCharacter });
+    const handleFilterChange = (selectedSpecies: string, selectedCharacter: string, sortOrder: 'asc' | 'desc' | 'none' = 'none') => {
+            setCurrentFilter({ selectedSpecies, selectedCharacter, sortOrder });
             let searchCharacterType = { species: false, character: false };
             let counterFilters = 0;
             if( selectedSpecies !== 'All'){
@@ -89,11 +86,20 @@ const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
                 counterFilters += 1;
             }
             if( searchCharacterType ){
-                const filteredCharacters = allCharacters.filter(character => {
+                let filteredCharacters = allCharacters.filter(character => {
                     const matchesSpecies  = searchCharacterType.species ? character.species === selectedSpecies : true;
                     const matchesCharacter = searchCharacterType.character ? character.name === selectedCharacter : true;
                     return matchesSpecies && matchesCharacter;
-                })
+                });
+
+                // Aplicar ordenamiento si está especificado
+                if (sortOrder !== 'none') {
+                    filteredCharacters = [...filteredCharacters].sort((a, b) => {
+                        const comparison = a.name.localeCompare(b.name);
+                        return sortOrder === 'asc' ? comparison : -comparison;
+                    });
+                }
+
                 setShowCharacters(filteredCharacters);
             }
     };

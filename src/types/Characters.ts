@@ -36,6 +36,7 @@ interface HasActiveFiltersInterface {
 interface CurrentFiltersInterface {
     selectedSpecies: string;
     selectedCharacter: string;
+    sortOrder: 'asc' | 'desc' | 'none';
 }
 
 interface HeartIconProps {
@@ -54,7 +55,7 @@ interface CharacterContextType {
     toggleSidebar: () => void;
     handleFilterVisibility: (isVisible: boolean) => void;
     handleSearchChange: (searchTerm: string) => void;
-    handleFilterChange: (selectedSpecies: string, selectedCharacter: string) => void;
+    handleFilterChange: (selectedSpecies: string, selectedCharacter: string, sortOrder: 'asc' | 'desc' | 'none') => void;
     handleFavoriteToggle: (id: number) => void;
     getCharacterById: (id: number) => ItemCharacterType | null;
 }
