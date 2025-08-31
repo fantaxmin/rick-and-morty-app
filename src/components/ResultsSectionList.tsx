@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import type { ResultsSectionListProps } from "../types/Characters";
+import type { ResultsHeaderSectionListProps } from "../types/Characters";
 import { CharacterContext } from "../context/CharactersProvider";
 
-const ResultsSectionList = ({ showCharacters } : ResultsSectionListProps) => {
+const ResultsHeaderSectionList = ({ showCharacters } : ResultsHeaderSectionListProps) => {
 
     const { hasActiveFilters } = useContext(CharacterContext);
 
@@ -18,4 +18,4 @@ const ResultsSectionList = ({ showCharacters } : ResultsSectionListProps) => {
     );
 };
 
-export default ResultsSectionList;
+export default ResultsHeaderSectionList;

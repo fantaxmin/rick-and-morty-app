@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import type { CharacterContextType, HasActiveFiltersInterface, ItemCharacterType } from "../types/Characters";
-// import { mockCharacters } from "../utils/mockData";
+import type { CharacterContextType, CurrentFiltersInterface, HasActiveFiltersInterface, ItemCharacterType } from "../types/Characters";
 import { fetchCharacters } from "../services/charactersService";
 
 const defaultCharacterContext: CharacterContextType = {
@@ -9,6 +8,7 @@ const defaultCharacterContext: CharacterContextType = {
     favorites: [],
     filterVisible: false,
     hasActiveFilters: { active: false, counter: 0 },
+    currentFilter: { selectedSpecies: 'All', selectedCharacter: 'All' },
     handleFilterVisibility: () => {},
     handleSearchChange: () => {},
     handleFilterChange: () => {},
@@ -24,12 +24,18 @@ const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
     const [showCharacters, setShowCharacters] = useState<ItemCharacterType[]>([]);
     const [favorites, setFavorites] = useState<ItemCharacterType[]>([]);
     const [filterVisible, setFilterVisible] = useState<boolean>(false);
+    const [currentFilter, setCurrentFilter] = useState<CurrentFiltersInterface>({ selectedSpecies: 'All', selectedCharacter: 'All'});
     const [hasActiveFilters, setHasActiveFilters] = useState<HasActiveFiltersInterface>({ active: false, counter: 0 });
 
     useEffect(() =>{
         const character = async () => {
             const data = await fetchCharacters();
             setAllCharacters(data);
+            setFavorites(data.filter((character : ItemCharacterType) => {
+                if( character.id === 4 || character.id === 6 ){
+                    return character.isFavorite = true;
+                }
+            }));
             setShowCharacters(data.filter((character : ItemCharacterType) => !character.isFavorite));
         }
         character();
@@ -55,29 +61,26 @@ const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     // Handle filter changes
-    const handleFilterChange = ( selectedSpecies : string, selectedCharacter : string) => {
-        if( selectedCharacter === 'All' && selectedSpecies === 'All' ){
-            setShowCharacters(allCharacters.filter(character => !character.isFavorite));
-            setHasActiveFilters({ active: false, counter: 0 });
-            return;
-        }
-        let activeFilters = { active: true, counter: 0 };
-        if(  selectedCharacter === 'All' ){
-            setShowCharacters(allCharacters.filter(character => character.species === selectedSpecies));
-            activeFilters.counter++;
-            setHasActiveFilters(activeFilters);
-            return;
-        }
-        if(  selectedSpecies === 'All' ){
-            setShowCharacters(allCharacters.filter(character => (selectedCharacter === 'Favorite' ? character.isFavorite : !character.isFavorite)));
-            activeFilters.counter++;
-            setHasActiveFilters(activeFilters);
-            return;
-        }
-        setShowCharacters(allCharacters.filter(character =>
-            character.species === selectedSpecies && (selectedCharacter === 'Favorite' ? character.isFavorite : !character.isFavorite)
-        ));
-        setHasActiveFilters({ active: true, counter: 2 });
+    const handleFilterChange = (selectedSpecies: string, selectedCharacter: string) => {
+            setCurrentFilter({ selectedSpecies, selectedCharacter });
+            let searchCharacterType = { species: false, character: false };
+            let counterFilters = 0;
+            if( selectedSpecies !== 'All'){
+                searchCharacterType.species = true;
+                counterFilters += 1;
+            }
+            if( selectedCharacter !== 'All' ){
+                searchCharacterType.character = true;
+                counterFilters += 1;
+            }
+            if( searchCharacterType ){
+                const filteredCharacters = allCharacters.filter(character => {
+                    const matchesSpecies  = searchCharacterType.species ? character.species === selectedSpecies : true;
+                    const matchesCharacter = searchCharacterType.character ? character.name === selectedCharacter : true;
+                    return matchesSpecies && matchesCharacter;
+                })
+                setShowCharacters(filteredCharacters);
+            }
     };
 
     const handleFavoriteToggle = ( id : number ) => {
@@ -118,6 +121,7 @@ const CharacterProvider = ({ children }: { children: React.ReactNode }) => {
                 favorites,
                 filterVisible,
                 hasActiveFilters,
+                currentFilter,
                 handleFilterVisibility,
                 handleSearchChange,
                 handleFilterChange,

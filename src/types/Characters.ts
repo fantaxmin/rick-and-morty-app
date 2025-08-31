@@ -6,7 +6,7 @@ interface ItemCharacterListProps {
     isFavorite: boolean;
 };
 
-interface ResultsSectionListProps {
+interface ResultsHeaderSectionListProps {
     showCharacters: ItemCharacterType[];
 }
 
@@ -33,6 +33,11 @@ interface HasActiveFiltersInterface {
     counter: number;
 }
 
+interface CurrentFiltersInterface {
+    selectedSpecies: string;
+    selectedCharacter: string;
+}
+
 interface HeartIconProps {
     isFavorite: boolean;
     className?: string;
@@ -44,6 +49,7 @@ interface CharacterContextType {
     favorites: ItemCharacterType[];
     filterVisible: boolean;
     hasActiveFilters: HasActiveFiltersInterface;
+    currentFilter: CurrentFiltersInterface;
     handleFilterVisibility: (isVisible: boolean) => void;
     handleSearchChange: (searchTerm: string) => void;
     handleFilterChange: (selectedSpecies: string, selectedCharacter: string) => void;
@@ -57,12 +63,13 @@ interface FilterCharactersProps {
 
 export type { 
     ItemCharacterListProps,
-    ResultsSectionListProps,
+    ResultsHeaderSectionListProps,
     TitleSectionProps,
     SectionListProps,
     CharacterContextType,
     ItemCharacterType,
     HasActiveFiltersInterface,
+    CurrentFiltersInterface,
     HeartIconProps,
     FilterCharactersProps 
 };

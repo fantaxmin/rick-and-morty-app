@@ -8,9 +8,9 @@ const FilterCharacters = ({ filterVisible } : FilterCharactersProps) => {
     const [selectedSpecies, setSelectedSpecies] = useState<string>('All');
     const [selectedCharacter, setSelectedCharacter] = useState<string>('All');
 
-    const { handleFilterChange, handleFilterVisibility } = useContext<CharacterContextType>(CharacterContext);
+    const { handleFilterChange, handleFilterVisibility,currentFilter } = useContext<CharacterContextType>(CharacterContext);
 
-    const isDisableButton = (selectedCharacter === 'All' && selectedSpecies === 'All');
+    const isDisableButton = (selectedSpecies === currentFilter.selectedSpecies && selectedCharacter === currentFilter.selectedCharacter);
 
     const handleSubmitFilter = (e: React.FormEvent) => {
         e.preventDefault();
@@ -25,7 +25,7 @@ const FilterCharacters = ({ filterVisible } : FilterCharactersProps) => {
     return(
         <section
             className={`${filterVisible ? 'animate-slow-show' : 'animate-slow-hidden'}
-                        w-88 h-70 mb-4 fixed bg-gray-100 rounded-md p-4 border border-gray-300
+                        w-88 h-70 mb-4 fixed bg-gray-100 rounded-md p-4 border border-gray-300 top-39
                         max-sm:size-full max-sm:fixed max-sm:top-0 max-sm:left-0 max-sm:m-0 max-sm:rounded-none max-sm:z-50`}
         >
             <nav className="hidden flex items-center justify-between mb-6 -mt-1 relative max-sm:block">
